@@ -8,6 +8,10 @@ from .serializer import CommentSerializer
 
 from .models import Comment
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 class BoardCommentView(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request, board_id):
@@ -19,6 +23,7 @@ class BoardCommentView(APIView):
                 "data": serializer.data
             })
         except Exception as e:
+            logger.error(f"error_msg : {e}")
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
     def post(self, request, board_id):
@@ -30,6 +35,8 @@ class BoardCommentView(APIView):
                     "message": "comment created successfully",
                     "data": CommentSerializer(comment).data
                 }, status=201)
+            logger.error(f"error_msg : {serializer.errors}")
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
+            logger.error(f"error_msg : {e}")
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

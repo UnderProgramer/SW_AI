@@ -5,6 +5,7 @@ class Comment(models.Model):
     title = models.TextField()
     content = models.TextField()
     board = models.ForeignKey('api.Board', on_delete=models.CASCADE)
+    author = models.ForeignKey('api.UserReg', on_delete=models.SET_NULL, null=True)
     isDeleted = models.SmallIntegerField(default=0)
     createdAt = models.DateTimeField(default=timezone.now)
 
