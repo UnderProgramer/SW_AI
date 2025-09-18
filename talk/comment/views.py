@@ -21,7 +21,7 @@ class BoardCommentView(APIView):
             return Response({
                 "message": "get comments success",
                 "data": serializer.data
-            })
+            }, status=status.HTTP_200_OK)
         except Exception as e:
             logger.error(f"error_msg : {e}")
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
@@ -34,7 +34,7 @@ class BoardCommentView(APIView):
                 return Response({
                     "message": "comment created successfully",
                     "data": CommentSerializer(comment).data
-                }, status=201)
+                }, status=status.HTTP_201_CREATED)
             logger.error(f"error_msg : {serializer.errors}")
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
