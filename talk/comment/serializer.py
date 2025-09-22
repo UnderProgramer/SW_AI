@@ -9,11 +9,11 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = ['id', 'board', 'author', 'content', 'createdAt', 'isDeleted']
         read_only_fields = ('author', 'createdAt', 'isDeleted', 'board')
 
-    def validate(self, data) :
-        if(data['content'] == ""):
-            raise serializers.ValidationError("Content cannot be empty")
-        if(len(data['content']) > 500):
-            raise serializers.ValidationError("Content exceeds maximum length of 500 characters")
+    def validate(self, value):
+        if value == "":
+            raise serializers.ValidationError("Title cannot be empty")
+        if len(value) > 500:
+            raise serializers.ValidationError("Title exceeds maximum length of 50 characters")
 
     def create(self, validated_data):
         self.validate(validated_data)

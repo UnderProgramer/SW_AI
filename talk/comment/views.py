@@ -14,9 +14,9 @@ logger = logging.getLogger(__name__)
 
 class BoardCommentView(APIView):
     permission_classes = [IsAuthenticated]
-    def get(self, request, board_id):
+    def get(self, request, id):
         try:
-            comments = Comment.objects.filter(board_id=board_id, isDeleted=0)
+            comments = Comment.objects.filter(board_id=id, isDeleted=0)
             serializer = CommentSerializer(comments, many=True)
             return Response({
                 "message": "get comments success",
@@ -26,11 +26,11 @@ class BoardCommentView(APIView):
             logger.error(f"error_msg : {e}")
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
-    def post(self, request, board_id):
+    def post(self, request, id):
         try:
             serializer = CommentSerializer(data=request.data, context={'request': request})
             if serializer.is_valid():
-                comment = serializer.save(author=request.user, board_id=board_id)
+                comment = serializer.save(author=request.user, board_id=id)
                 return Response({
                     "message": "comment created successfully",
                     "data": CommentSerializer(comment).data
