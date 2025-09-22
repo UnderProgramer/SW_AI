@@ -1,5 +1,7 @@
 from rest_framework import serializers
+
 from .models import Comment
+import json
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -8,6 +10,7 @@ class CommentSerializer(serializers.ModelSerializer):
         read_only_fields = ('author', 'createdAt', 'isDeleted', 'board')
 
     def validate(self, data) :
+        data = json.loads(data)
         if(data['content'] == ""):
             raise serializers.ValidationError("Content cannot be empty")
         if(len(data['content']) > 500):
