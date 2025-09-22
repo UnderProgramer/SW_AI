@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Board
-import json
+
 
 class BoardSerializer(serializers.ModelSerializer):
     class Meta:
@@ -8,19 +8,21 @@ class BoardSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'content', 'author', 'createdAt', 'isDeleted']
         read_only_fields = ('author', 'createdAt', 'isDeleted')
 
-    def validate_content(self, data) :
-        data = json.loads(data)
-        if(data['content'] == ""):
-            raise serializers.ValidationError("Content cannot be empty")
-        if(len(data['content']) > 500):
-            raise serializers.ValidationError("Content exceeds maximum length of 500 characters")
-
-    def validate_title(self, data) :
-        data = json.loads(data)
-        if(data['title'] == ""):
+    # title 검증
+    def validate_title(self, value):
+        if value == "":
             raise serializers.ValidationError("Title cannot be empty")
-        if(len(data['title']) > 50):
+        if len(value) > 50:
             raise serializers.ValidationError("Title exceeds maximum length of 50 characters")
+        return value
+
+    # content 검증
+    def validate_content(self, value):
+        if value == "":
+            raise serializers.ValidationError("Content cannot be empty")
+        if len(value) > 500:
+            raise serializers.ValidationError("Content exceeds maximum length of 500 characters")
+        return value
 
     def create(self, validated_data):
         self.validate_content(validated_data)
