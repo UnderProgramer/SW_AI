@@ -15,7 +15,7 @@ class CreateBoardView(APIView):
     permission_classes = [IsAuthenticated]
     def post(self, request):
         try:
-            serializer = BoardSerializer.create(data = request.data, context={'request': request})
+            serializer = BoardSerializer(data = request.data, context={'request': request})
             if serializer.is_valid() :
                 board = serializer.save(author=request.user)
 
