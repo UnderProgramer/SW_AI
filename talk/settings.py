@@ -20,12 +20,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 AUTH_USER_MODEL = 'api.UserReg'
 
+# 정적 파일 기본 URL
+STATIC_URL = '/static/'
+
+# collectstatic 했을 때 모아질 경로
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', '')
+# SECRET_KEY = os.environ.get('SECRET_KEY', '')
+SECRET_KEY='django-insecure-v9!kh)h$*0zed6=j%*2=45uxsxmirp9bbta1zhqj8%uq5%bv5h'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', '') == '1'
@@ -122,11 +129,14 @@ DBNAME = os.getenv("dbname")
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": DBNAME,
-        "USER": USER,
-        "PASSWORD": PASSWORD,
-        "HOST": HOST,
-        "PORT": PORT,
+        "NAME": 'postgres',
+        "USER": 'postgres.vbbmcvytamhubrfzxmlj',
+        "PASSWORD": 'shadower718{}[]',
+        "HOST": 'aws-1-ap-northeast-2.pooler.supabase.com',
+        "PORT": 6543,
+        'OPTIONS': {
+            'sslmode': 'require',
+        },
     }
 }
 
