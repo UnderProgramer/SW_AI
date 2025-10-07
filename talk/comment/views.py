@@ -7,6 +7,7 @@ from rest_framework import status
 from .serializer import CommentSerializer
 
 from .models import Comment
+from ..board.models import Board
 
 import logging
 
@@ -25,18 +26,22 @@ class BoardCommentView(APIView):
         except Exception as e:
             logger.error(f"error_msg : {e}")
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-    
+        
+        
     def post(self, request, id):
         try:
+            board = Board.objects.get(id=id)
+        except Board.DoesNotExist:
+            return Response({"error": "Board not found"}, status=404)
+        try:
+
             serializer = CommentSerializer(data=request.data, context={'request': request})
             if serializer.is_valid():
-                comment = serializer.save(author=request.user, board_id=id)
+                comment = serializer.save(author=request.user, board=board)
                 return Response({
                     "message": "comment created successfully",
                     "data": CommentSerializer(comment).data
-                }, status=status.HTTP_201_CREATED)
-            logger.error(f"error_msg : {serializer.errors}")
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                }, status=201)
         except Exception as e:
             logger.error(f"error_msg : {e}")
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(f"err_msg : {e}", status=400)
