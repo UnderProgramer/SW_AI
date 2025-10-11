@@ -47,3 +47,7 @@ class UserLoginSerializer(serializers.Serializer):
         attrs['refresh'] = str(refresh)
         attrs['access']= str(refresh.access_token)
         return attrs
+    
+class ChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
