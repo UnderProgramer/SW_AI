@@ -2,7 +2,6 @@ from django.db import models
 from django.utils import timezone
 
 class Comment(models.Model):
-    title = models.TextField()
     content = models.TextField()
     board = models.ForeignKey('board.Board', on_delete=models.CASCADE)
     author = models.ForeignKey('api.UserReg', on_delete=models.SET_NULL, null=True)

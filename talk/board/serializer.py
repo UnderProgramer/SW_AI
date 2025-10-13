@@ -23,23 +23,3 @@ class BoardSerializer(serializers.ModelSerializer):
         if len(value) > 500:
             raise serializers.ValidationError("Content exceeds maximum length of 500 characters")
         return value
-
-    def create(self, validated_data):
-        self.validate_content(validated_data)
-        self.validate_title(validated_data)
-        
-        return Board.objects.create(**validated_data)
-    
-    def update(self, instance, validated_data):
-        self.validate_content(validated_data)
-        self.validate_title(validated_data)
-
-        instance.title = validated_data.get('title', instance.title)
-        instance.content = validated_data.get('content', instance.content)
-        instance.save()
-        return instance
-
-    def delete(self, instance):
-        instance.isDeleted = 1
-        instance.save()
-        return instance

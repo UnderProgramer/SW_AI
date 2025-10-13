@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.exceptions import AuthenticationFailed
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 
 import logging
@@ -60,34 +60,27 @@ class OnceViewBoard(APIView) :
         
 class UpdateBoard(APIView) :
     permission_classes = [IsAuthenticated]
-    def put(self, request, board_id) :
-        try:
-            board = Board.objects.get(id=board_id, isDeleted=0)
-            serializer = BoardSerializer.update(board, data=request.data)
-            if serializer:
-                return Response({
-                    "message" : "update board success",
-                    "data" : BoardSerializer(board).data
-                })
-            return Response({"error": "Invalid data"}, status=status.HTTP_400_BAD_REQUEST)
-        except Board.DoesNotExist:
-            return Response({"error": "Board not found"}, status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    def patch(self, request, board_id) :
+        board = get_object_or_404(Board, id=board_id, isDeleted=0)
+        serializer = BoardSerializer(board, data=request.data, partial=True)  # partial=True는 부분 업데이트 허용
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        if serializer:
+            return Response({
+                "message" : "update board success",
+                "data" : BoardSerializer(board).data
+            })
         
 class DeleteBoard(APIView) :
     permission_classes = [IsAuthenticated]
     def delete(self, request, board_id) :
-        try:
-            board = Board.objects.get(id=board_id, isDeleted=0)
-            serializer = BoardSerializer.delete(board)
-            if serializer:
-                return Response({
-                    "message" : "delete board success",
-                    "data" : BoardSerializer(board).data
-                })
-            return Response({"error": "Invalid data"}, status=status.HTTP_400_BAD_REQUEST)
-        except Board.DoesNotExist:
-            return Response({"error": "Board not found"}, status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        board = get_object_or_404(Board, id=board_id, isDeleted=0)
+        board.isDeleted = 1
+        board.save()
+
+        serializer = BoardSerializer.delete(board)
+        if serializer:
+            return Response({
+                "message" : "delete board success",
+                "data" : BoardSerializer(board).data
+            })
