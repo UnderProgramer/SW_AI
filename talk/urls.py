@@ -45,5 +45,5 @@ urlpatterns = [
 
     path('api/board/', include('talk.board.urls')),
 
-    path('api/board/<int:id>/comment/', include('talk.comment.urls'))
+    path('api/board/<int:boardId>/comment/', include('talk.comment.urls'))
 ]

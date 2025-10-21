@@ -4,12 +4,21 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework import status
 from .serializer import UserRegisterSerializer, UserLoginSerializer, ChangePasswordSerializer
 
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+
 import logging
 
 logger = logging.getLogger(__name__)
 
 class SignUpView(APIView):
     permission_classes = [AllowAny]
+
+    @swagger_auto_schema(
+        operation_description="계정 생성",
+        request_body=UserRegisterSerializer,
+        responses={status.HTTP_200_OK: "생성 성공"}
+    )
     def post(self, request):
         try :
             serial = UserRegisterSerializer(data = request.data)
@@ -23,6 +32,12 @@ class SignUpView(APIView):
 
 class SignInView(APIView):
     permission_classes = [AllowAny]
+
+    @swagger_auto_schema(
+        operation_description="로그인",
+        request_body=UserLoginSerializer,
+        responses={status.HTTP_200_OK: "로그인성공"}
+    )
     def post(self, request):
         try :
             serializer = UserLoginSerializer(data=request.data)
@@ -41,6 +56,12 @@ class SignInView(APIView):
 
 class ResetPassword(APIView):
     permission_classes = [IsAuthenticated]
+
+    @swagger_auto_schema(
+        operation_description="비번 초기화",
+        request_body=ChangePasswordSerializer,
+        responses={status.HTTP_200_OK: "초기화 성공"}
+    )
     def post(self, request):
         try :
             serializer = ChangePasswordSerializer(data=request.data)

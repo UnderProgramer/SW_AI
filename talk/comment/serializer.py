@@ -11,9 +11,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
     def validate_content(self, value):
         if not value.strip():
-            print("didnt found")
             raise serializers.ValidationError("Content cannot be empty.")
         if len(value) > 500:
-            print("500 character over")
             raise serializers.ValidationError("Content exceeds 500 characters.")
         return value
