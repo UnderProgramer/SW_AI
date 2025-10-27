@@ -26,6 +26,8 @@ class SignUpView(APIView):
             if serial.is_valid():
                 serial.save()
                 return Response({"message":"success"}, status = status.HTTP_201_CREATED)
+            else:
+                return Response(serial.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e :
             logger.error(f"error_msg : {e}")
             return Response(f"err_msg : {e}", status = status.HTTP_400_BAD_REQUEST)
