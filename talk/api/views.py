@@ -38,7 +38,19 @@ class SignInView(APIView):
     @swagger_auto_schema(
         operation_description="로그인",
         request_body=UserLoginSerializer,
-        responses={status.HTTP_200_OK: "로그인성공"}
+        responses={
+        status.HTTP_200_OK: openapi.Response(
+            description="로그인 성공",
+            examples={
+                "application/json": {
+                    "refresh_token": "string",
+                    "access_token": "string"
+                }
+            }
+        ),
+        status.HTTP_400_BAD_REQUEST: "잘못된 요청입니다.",
+        status.HTTP_401_UNAUTHORIZED: "인증 실패"
+    }
     )
     def post(self, request):
         try :
