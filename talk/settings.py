@@ -29,14 +29,14 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = os.environ.get('SECRET_KEY', '')
-SECRET_KEY='django-insecure-v9!kh)h$*0zed6=j%*2=45uxsxmirp9bbta1zhqj8%uq5%bv5h'
+SECRET_KEY = os.environ.get('SECRET_KEY', '')
+
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', '') == '1'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*', 'swai-production-870b.up.railway.app']
 
 CSRF_TRUSTED_ORIGINS = [
     "https://*.onrender.com",
