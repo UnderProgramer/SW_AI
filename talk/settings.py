@@ -32,7 +32,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 SECRET_KEY = os.environ.get('SECRET_KEY', '')
 
 
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', '') == '1'
 
@@ -61,6 +60,7 @@ INSTALLED_APPS = [
     'talk.api',
     'talk.board',
     'talk.comment',
+    'talk.chart',
 ]
 
 MIDDLEWARE = [
@@ -131,10 +131,10 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": 'postgres',
-        "USER": 'postgres.vbbmcvytamhubrfzxmlj',
-        "PASSWORD": 'shadower718{}[]',
-        "HOST": 'aws-1-ap-northeast-2.pooler.supabase.com',
-        "PORT": 6543,
+        "USER": USER,
+        "PASSWORD": PASSWORD,
+        "HOST": HOST,
+        "PORT": PORT,
         'OPTIONS': {
             'sslmode': 'require',
         },

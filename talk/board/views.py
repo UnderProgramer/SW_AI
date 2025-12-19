@@ -43,9 +43,6 @@ class BoardView(APIView):
             logger.error(f"error_msg : {e}")
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
-
-
-
     @swagger_auto_schema(
         operation_description="board 전체 불러오기",
         responses={200: BoardSerializer(many=True)}
@@ -86,9 +83,6 @@ class BoardWithId(APIView):
         except Exception as e:
             logger.error(f"error_msg : {e}")
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-
-
 
     @swagger_auto_schema(
         operation_description="board 업데이트",
